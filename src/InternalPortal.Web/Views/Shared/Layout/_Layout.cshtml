@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en-gb">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - @Consts.AppName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Meta tags -->
+    @if (ViewBag.MetaNameTags != null)
+    {
+        foreach (var meta in ViewBag.MetaNameTags)
+        {
+            <meta name="@meta.Key" content="@meta.Value">
+        }
+    }
+    @RenderSection("meta", required: false)
+
+    <!-- Theme/Favicon -->
+
+    <!-- Sharing -->
+
+    <!-- Styles -->
+</head>
+<body>
+    @if (Context.Request.Host.Value.StartsWith("localhost"))
+    {
+        <!-- stack overflow mini profiler -->
+        <mini-profiler />
+    }
+
+    <!-- Page header -->
+    <partial name="layout/_Header" />
+
+    <!-- Main content -->
+    <main id="main-content" role="main">
+        @RenderBody()
+    </main>
+
+    <!-- Page footer -->
+    <partial name="layout/_Footer" />
+
+    <!-- Scripts  -->
+    @*<partial name="Layout/_AntiForgery" />*@
+    <partial name="layout/_Analytics" />
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿<!-- Adds antiforgery token to JS app object for use in ajax calls -->
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@functions{
+    public string? GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+@*<script asp-add-nonce="true">
+    (function () {
+        "use strict";
+
+        // create app object if it doesn't exist
+        if (!window.app) {
+            window.app = {};
+        }
+
+        // add getAntiXsrfRequestToken if it doesn't exist
+        window.app.getAntiXsrfRequestToken = function () {
+            return '@GetAntiXsrfRequestToken()';
+        };
+    }());
+</script>*@
