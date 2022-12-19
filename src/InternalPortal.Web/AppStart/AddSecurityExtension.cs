@@ -5,7 +5,7 @@ namespace InternalPortal.Web.AppStart
 {
     public static class AddSecurityExtension
     {
-        private const string LocalHost = "wss://localhost:44313";
+        private const string LocalHost = "wss://localhost:44313 wss://localhost:44311";
 
         public static void AddSecurity(this IServiceCollection services)
         {
@@ -34,8 +34,8 @@ namespace InternalPortal.Web.AppStart
 
                 // Allow JavaScript from:
                 csp.AllowScripts
-                     .FromSelf();
-                //.AddNonce(); // e.g. <script asp-add-nonce="true"></script> requires: @addTagHelper *, Joonasw.AspNetCore.SecurityHeaders
+                    .FromSelf()
+                    .AddNonce(); // e.g. <script asp-add-nonce="true"></script>
 
                 csp.AllowStyles
                     .FromSelf();

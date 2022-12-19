@@ -5,7 +5,7 @@ namespace InternalPortal.Web.AppStart
     public static class AddStaticFiles
     {
         public static void UseStaticFileDefaults(this IApplicationBuilder app)
-        {
+        {   
             app.UseStaticFiles(new StaticFileOptions()
             {
                 OnPrepareResponse = (context) =>

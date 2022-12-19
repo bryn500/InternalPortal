@@ -21,10 +21,23 @@ This project uses the ASP.NET Core [Secret Manager](https://docs.microsoft.com/e
 }
 ```
 
+## Build
+
+npm scripts copy and minify required govuk files and transpile any scss files to css
+
+```console
+npm run build
+```
+
+The scss can be watched and automatically rebuilt with changes with the following
+
+```console
+npm run dev
+```
+
 ## Run
 
-```
+```console
 dotnet build
 dotnet run
-```
-
+``

@@ -1,0 +1,26 @@
+{
+  "name": "internalportal.web",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".",
+  "scripts": {
+    "build": "npm run build-css && npm run copy-govuk-fonts && npm run copy-govuk-images && npm run copy-js && npm run minify-js",
+    "dev": "sass wwwroot/css --load-path=node_modules --quiet-deps --style=expanded --watch",
+    "build-css": "sass wwwroot/css --load-path=node_modules --quiet-deps --style=compressed",
+    "copy-govuk-fonts": "copyfiles -f node_modules/govuk-frontend/govuk/assets/fonts/* wwwroot/assets/fonts",
+    "copy-govuk-images": "copyfiles -f node_modules/govuk-frontend/govuk/assets/images/* wwwroot/assets/images",
+    "copy-js": "copyfiles -f node_modules/govuk-frontend/govuk/all.js wwwroot/js/govuk",
+    "minify-js": "terser wwwroot/js/govuk/all.js > wwwroot/js/govuk/all.min.js"
+
+  },
+  "author": "DfE",
+  "license": "MIT",
+  "dependencies": {
+    "govuk-frontend": "^4.4.1"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "sass": "^1.57.0",
+    "terser": "^5.16.1"
+  }
+}

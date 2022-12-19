@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en-gb">
+<html lang="en-gb" class="govuk-template">
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"] - @Consts.AppName</title>
@@ -17,25 +17,49 @@
     @RenderSection("meta", required: false)
 
     <!-- Theme/Favicon -->
+    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="mask-icon" href="/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/images/govuk-apple-touch-icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/govuk-apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" href="/assets/images/govuk-apple-touch-icon.png">
 
     <!-- Sharing -->
+    <meta property="og:image" content="@Url.Content("~/assets/images/govuk-opengraph-image.png")">
 
     <!-- Styles -->
+    <link href="~/css/govuk.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/styles.css" rel="stylesheet" asp-append-version="true" />
 </head>
-<body>
+<body class="govuk-template__body">
     @if (Context.Request.Host.Value.StartsWith("localhost"))
     {
         <!-- stack overflow mini profiler -->
         <mini-profiler />
     }
+    <script asp-add-nonce="true">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
     <!-- Page header -->
     <partial name="layout/_Header" />
 
     <!-- Main content -->
-    <main id="main-content" role="main">
-        @RenderBody()
-    </main>
+    <div class="govuk-width-container">
+        <div class="govuk-phase-banner">
+            <p class="govuk-phase-banner__content">
+                <strong class="govuk-tag govuk-phase-banner__content__tag">
+                    alpha
+                </strong>
+                <span class="govuk-phase-banner__text">
+                    This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.
+                </span>
+            </p>
+        </div>
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            @RenderBody()
+        </main>
+    </div>
 
     <!-- Page footer -->
     <partial name="layout/_Footer" />
@@ -43,6 +67,10 @@
     <!-- Scripts  -->
     @*<partial name="Layout/_AntiForgery" />*@
     <partial name="layout/_Analytics" />
+    <script src="~/js/govuk/all.min.js" asp-append-version="true"></script>
+    <script asp-add-nonce="true">
+        window.GOVUKFrontend.initAll();
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
