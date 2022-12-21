@@ -1,0 +1,26 @@
+﻿@model string
+
+@{
+    var questionModel = (QuestionViewModel)ViewData["Question"];
+    var propName = ViewData.TemplateInfo.HtmlFieldPrefix;
+    var hasError = ViewData.FieldHasError(propName);
+    var hasHint = !string.IsNullOrEmpty(questionModel.Hint);
+    var describedBy = hasHint ? hasError ? $"{propName}-hint {propName}-error" : $"{propName}-hint" : "";
+}
+
+<div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+    <label class="govuk-label" asp-for="@Model">@questionModel.Question</label>
+    @if (!string.IsNullOrEmpty(questionModel.Hint))
+    {
+        <div id="@propName-hint" class="govuk-hint">
+            <p>@questionModel.Hint</p>
+        </div>
+    }
+    @if (hasError)
+    {
+        <span class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span><span asp-validation-for="@Model"></span>
+        </span>
+    }
+    <input class="govuk-input @(hasError ? "govuk-input--error" : "")" aria-describedby="@describedBy" asp-for="@Model" type="@questionModel.Type" />
+</div> 

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using InternalPortal.Web.AppStart;
+﻿using InternalPortal.Web.AppStart;
 using InternalPortal.Web.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InternalPortal.Web
 {
@@ -22,7 +22,7 @@ namespace InternalPortal.Web
             services.AddConfigRegistration(Configuration);
 
             // Configure application services
-            services.AddServiceRegistration();
+            services.AddServiceRegistration(Configuration);
 
             // Adds response caching and compression
             services.AddCachingAndCompression();

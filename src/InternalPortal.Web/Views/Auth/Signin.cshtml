@@ -1,0 +1,19 @@
+﻿@model SignInViewModel
+
+<h1 class="govuk-heading-xl">
+    @ViewData["Title"]
+</h1>
+
+<!-- Validation -->
+<partial name="FormComponents/_ValidationSummary" model="ViewData.ModelState" />
+
+<form method="post" novalidate>
+    @{ ViewData["Question"] = Model.UsernameQuestion; }
+    <partial name="FormComponents/_TextField" for="Username" />
+
+    @{ ViewData["Question"] = Model.PasswordQuestion; }
+    <partial name="FormComponents/_TextField" for="Password" />
+
+    <!-- Submit -->
+    <button class="button govuk-button" type="submit">Submit</button>
+</form>

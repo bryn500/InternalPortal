@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Apim;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternalPortal.Web.Controllers
@@ -6,11 +7,13 @@ namespace InternalPortal.Web.Controllers
     [AllowAnonymous]
     public class HomeController : BaseController
     {
+        private readonly IApimClient _client;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IApimClient client, ILogger<HomeController> logger)
         {
             _logger = logger;
+            _client = client;
         }
 
         [HttpGet("/")]
@@ -44,6 +47,12 @@ namespace InternalPortal.Web.Controllers
             ViewData["Title"] = "Cookies";
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Cookies", "/cookies"));
             return View();
+        }
+
+        [HttpGet("/trial")]
+        public async Task<string> Trial(CancellationToken cancellationToken)
+        {
+            return await _client.GetApis(cancellationToken: cancellationToken);
         }
 
         //[HttpGet("/asyncexamplewithcancel")]

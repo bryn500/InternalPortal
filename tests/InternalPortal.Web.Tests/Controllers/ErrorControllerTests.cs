@@ -51,6 +51,6 @@ namespace InternalPortal.Web.Tests.Controllers
             // assert
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
-        }     
+        }
     }
 }

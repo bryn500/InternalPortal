@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
-using Microsoft.Extensions.Configuration;
 
 namespace UITests
 {

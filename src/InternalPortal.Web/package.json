@@ -11,7 +11,6 @@
     "copy-govuk-images": "copyfiles -f node_modules/govuk-frontend/govuk/assets/images/* wwwroot/assets/images",
     "copy-js": "copyfiles -f node_modules/govuk-frontend/govuk/all.js wwwroot/js/govuk",
     "minify-js": "terser wwwroot/js/govuk/all.js > wwwroot/js/govuk/all.min.js"
-
   },
   "author": "DfE",
   "license": "MIT",

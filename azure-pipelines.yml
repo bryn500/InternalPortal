@@ -12,6 +12,7 @@ trigger:
 
 pool:
   vmImage: "windows-latest"
+  demands: npm
 
 steps:
   - task: DotNetCoreCLI@2
@@ -34,6 +35,21 @@ steps:
         **/*.Tests/*.csproj
         !**/*.UITests.csproj
       arguments: "--configuration $(BuildConfiguration)"  
+
+  - task: Npm@1
+    displayName: "npm install Web"
+    inputs:
+      command: ci
+      workingDir: src/InternalPortal.Web
+      verbose: false
+
+  - task: Npm@1
+    displayName: "npm build Web"
+    inputs:
+      command: custom
+      workingDir: src/InternalPortal.Web
+      verbose: false
+      customCommand: "run build"
 
   - task: DotNetCoreCLI@2
     displayName: "Publish Web"
