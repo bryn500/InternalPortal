@@ -1,6 +1,8 @@
 ﻿using Apim.Models;
 using Shared;
+using System.Net.Http.Json;
 using System.Text;
+using System.Web;
 
 namespace Apim
 {
@@ -13,12 +15,13 @@ namespace Apim
         }
 
         /// <summary>
+        /// Login user
         /// https://github.com/Azure/api-management-developer-portal/blob/master/src/services/usersService.ts
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <returns>LoginResponse</returns>
         /// <exception cref="ArgumentException"></exception>
         public Task<LoginResponse> Auth(string? userName, string? password, CancellationToken cancellationToken = default)
         {
@@ -59,23 +62,19 @@ namespace Apim
         /// <summary>
         /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/list-by-service?tabs=HTTP
         /// </summary>
-        /// <param name="cancellationToken"></param>
         /// <param name="skip"></param>
         /// <param name="take"></param>
-        /// <returns></returns>
-        public async Task<string> GetApis(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+        /// <param name="cancellationToken"></param>
+        /// <returns>ApisResponse</returns>
+        public async Task<ApisResponse?> GetApis(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
         {
-            //var queryString = HttpUtility.ParseQueryString(string.Empty);
-            //queryString.Add("expandApiVersionSet", "true");
-            //queryString.Add("$top", take.ToString());
-            //queryString.Add("$skip", skip.ToString());
-            //?{queryString}
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString.Add("expandApiVersionSet", "true");
+            queryString.Add("$top", take.ToString());
+            queryString.Add("$skip", skip.ToString());
 
-            var response = await _client.GetAsync($"/apis", cancellationToken);
-
-            var content = await response.Content.ReadAsStringAsync();
-
-            return content;
+            var responseMessage = await _client.GetAsync($"/apis?{queryString}", cancellationToken);
+            return await responseMessage.Content.ReadFromJsonAsync<ApisResponse>(cancellationToken: cancellationToken);
         }
     }
 }

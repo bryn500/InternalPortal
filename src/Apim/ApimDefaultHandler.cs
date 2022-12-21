@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Globalization;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -9,19 +11,22 @@ namespace Apim
 {
     public class ApimDefaultHandler : DelegatingHandler
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMemoryCache _cache;
         private readonly ApimOptions _apimOptions;
         private const string HeaderName = "Authorization";
         private const string CacheKey = "ApiSasTokenKey";
 
-        public ApimDefaultHandler(IMemoryCache cache, IOptions<ApimOptions> apimOptions)
+        public ApimDefaultHandler(IHttpContextAccessor httpContextAccessor, IMemoryCache cache, IOptions<ApimOptions> apimOptions)
         {
+            _httpContextAccessor = httpContextAccessor;
             _cache = cache;
             _apimOptions = apimOptions.Value;
         }
 
-        public ApimDefaultHandler(DelegatingHandler innerHandler, IMemoryCache cache, IOptions<ApimOptions> apimOptions) : base(innerHandler)
+        public ApimDefaultHandler(DelegatingHandler innerHandler, IHttpContextAccessor httpContextAccessor, IMemoryCache cache, IOptions<ApimOptions> apimOptions) : base(innerHandler)
         {
+            _httpContextAccessor = httpContextAccessor;
             _cache = cache;
             _apimOptions = apimOptions.Value;
         }
@@ -29,8 +34,10 @@ namespace Apim
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             AddApiVersionToQueryString(request);
-            //var token = GetSasToken(DateTime.Now.AddDays(1));
-            //request.Headers.TryAddWithoutValidation(HeaderName, HttpUtility.UrlEncode(token));
+            var token = GetSasToken();
+
+            if (!string.IsNullOrEmpty(token))
+                request.Headers.TryAddWithoutValidation(HeaderName, "SharedAccessSignature " + token);
 
             return await base.SendAsync(request, cancellationToken);
         }
@@ -61,11 +68,22 @@ namespace Apim
         }
 
         /// <summary>
+        /// Grabs the user's sas token
+        /// </summary>
+        /// <returns></returns>
+        private string? GetSasToken()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Authentication)?.Value;
+        }
+
+        /// <summary>
+        /// Unused
         /// Gets an sas token for the length of time speicifed, will cache this for the length of the expiry
+        /// This will represent an unauthenticated user accessing the api
         /// </summary>
         /// <param name="expiry">Datetime that the token should expire</param>
         /// <returns></returns>
-        private string GetSasToken(DateTime expiry)
+        private string GetAppSasToken(DateTime expiry)
         {
             if (expiry > DateTime.Now.AddDays(30))
                 throw new ArgumentException("expiry can't be over 30 days in the future");
@@ -80,6 +98,7 @@ namespace Apim
         }
 
         /// <summary>
+        /// Unused
         /// To programmatically create an access token
         /// https://msdn.microsoft.com/library/azure/5b13010a-d202-4af5-aabf-7ebc26800b3d#ProgrammaticallyCreateToken
         /// </summary>

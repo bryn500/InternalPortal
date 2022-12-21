@@ -20,11 +20,32 @@
                 <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
                 <ul id="navigation" class="govuk-header__navigation-list">
                     @*govuk-header__navigation-item--active*@
-                    <li class="govuk-header__navigation-item"> 
-                        <a class="govuk-header__link" href="/signin">
-                            Sign in
+                    <li class="govuk-header__navigation-item">
+                        <a class="govuk-header__link" href="/">
+                            Home
                         </a>
                     </li>
+                    <li class="govuk-header__navigation-item">
+                        <a class="govuk-header__link" href="/apis">
+                            Apis
+                        </a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="govuk-header__navigation-item">
+                            <a class="govuk-header__link" href="/account/logout">
+                                Logout
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="govuk-header__navigation-item">
+                            <a class="govuk-header__link" href="/account/login">
+                                Login
+                            </a>
+                        </li>
+                    }                    
                 </ul>
             </nav>
         </div>

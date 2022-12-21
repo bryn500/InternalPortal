@@ -2,7 +2,7 @@
 
 namespace InternalPortal.Web.AppStart
 {
-    public static class AddStaticFiles
+    public static class AddStaticFilesExtension
     {
         public static void UseStaticFileDefaults(this IApplicationBuilder app)
         {

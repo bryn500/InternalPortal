@@ -1,5 +1,6 @@
 ﻿using InternalPortal.Web.AppStart;
 using InternalPortal.Web.Filters;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternalPortal.Web
@@ -24,6 +25,9 @@ namespace InternalPortal.Web
             // Configure application services
             services.AddServiceRegistration(Configuration);
 
+            // Allow access to httpcontext via DI
+            services.AddHttpContextAccessor();
+
             // Adds response caching and compression
             services.AddCachingAndCompression();
 
@@ -39,9 +43,17 @@ namespace InternalPortal.Web
             // Add controllers + views instead of razor pages
             services.AddControllersWithViews();
 
+            services.AddAuth();
+
+            services.Configure<SecurityStampValidatorOptions>(o =>
+                o.ValidationInterval = TimeSpan.FromSeconds(10));
+
             // Add/configure MVC
             services.AddMvc(options =>
             {
+                // default to need auth to access views
+                AddAuthExtension.AddAuthOptions(options);
+
                 // Handle cancelled requests
                 options.Filters.Add<OperationCancelledExceptionFilter>();
 
@@ -93,6 +105,9 @@ namespace InternalPortal.Web
 
             // Use cache profiles set in ConfigureServices
             app.UseResponseCaching();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             // Execute the matched endpoint
             app.UseEndpoints(endpoints =>

@@ -1,6 +1,6 @@
 ﻿namespace InternalPortal.Web.AppStart
 {
-    public static class AddErrorPages
+    public static class ErrorPagesExtension
     {
         public static void UseErrorPages(this IApplicationBuilder app, IWebHostEnvironment env)
         {

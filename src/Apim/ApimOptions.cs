@@ -2,6 +2,7 @@
 {
     public class ApimOptions
     {
+        public const string ConfigName = "ManagmentApi";
         public string ManagementApiUrl { get; set; }
         public string ManagementApiVersion { get; set; }
         public string ManagementApiId { get; set; }

@@ -6,7 +6,7 @@ namespace InternalPortal.Web.AppStart
     {
         public static void AddConfigRegistration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<ApimOptions>(configuration.GetSection("ManagmentApi"));
+            services.Configure<ApimOptions>(configuration.GetSection(ApimOptions.ConfigName));
         }
     }
 }

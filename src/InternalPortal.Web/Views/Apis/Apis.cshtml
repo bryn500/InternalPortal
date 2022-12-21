@@ -1,0 +1,11 @@
+﻿@model Apim.Models.ApisResponse
+
+<h1 class="govuk-heading-xl">
+    @ViewData["Title"]
+</h1>
+
+<p>
+    <code>
+        @Json.Serialize(Model)
+    </code>
+</p>

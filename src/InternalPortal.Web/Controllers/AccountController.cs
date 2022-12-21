@@ -1,25 +1,29 @@
 ﻿using Apim;
 using InternalPortal.Web.Models.Auth;
 using InternalPortal.Web.Models.Shared;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace InternalPortal.Web.Controllers
 {
-    [AllowAnonymous]
-    public class AuthController : BaseController
+    [Route("[controller]")]
+    public class AccountController : BaseController
     {
-        private readonly ApimClient _client;
-        private readonly ILogger<AuthController> _logger;
+        private readonly IApimClient _client;
+        private readonly ILogger<AccountController> _logger;
 
-        public AuthController(ApimClient client, ILogger<AuthController> logger)
+        public AccountController(IApimClient client, ILogger<AccountController> logger)
         {
             _logger = logger;
             _client = client;
         }
 
-        [HttpGet("/signin")]
-        public IActionResult SignIn()
+        [AllowAnonymous]
+        [HttpGet("login")]
+        public IActionResult Login()
         {
             ViewData["Title"] = "Sign In";
 
@@ -31,8 +35,9 @@ namespace InternalPortal.Web.Controllers
             return View(model);
         }
 
-        [HttpPost("/signin")]
-        public async Task<IActionResult> SignIn(SignInViewModel model, CancellationToken cancellationToken)
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(SignInViewModel model, CancellationToken cancellationToken)
         {
             ViewData["Title"] = "Sign In";
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Sign In", "/signin"));
@@ -47,8 +52,20 @@ namespace InternalPortal.Web.Controllers
             try
             {
                 var result = await _client.Auth(model.Username, model.Password, cancellationToken);
+                // todo: second call to get user details for profile
+                // todo: enforce single user session at a time
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, result.Identifier),
+                    new Claim(ClaimTypes.Authentication, result.AccessToken),
+                };
 
-                return Json(result);
+                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                return Redirect("/");
             }
             catch (HttpRequestException ex)
             {
@@ -57,7 +74,14 @@ namespace InternalPortal.Web.Controllers
             }
         }
 
-        public void SetSignInFormModel(SignInViewModel model)
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
+        }
+
+        private void SetSignInFormModel(SignInViewModel model)
         {
             model.UsernameQuestion = new QuestionViewModel()
             {

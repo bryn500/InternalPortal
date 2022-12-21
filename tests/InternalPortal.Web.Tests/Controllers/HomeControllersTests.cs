@@ -1,4 +1,3 @@
-using Apim;
 using InternalPortal.Web.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +9,13 @@ namespace InternalPortal.Web.Tests.Controllers
     public class HomeControllerTests
     {
         private readonly Mock<ILogger<HomeController>> _logger = new Mock<ILogger<HomeController>>();
-        private readonly Mock<IApimClient> client = new Mock<IApimClient>();
 
         public HomeController GetController()
         {
             var context = new DefaultHttpContext();
             context.Request.Scheme = "";
 
-            return new HomeController(client.Object, _logger.Object)
+            return new HomeController(_logger.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
