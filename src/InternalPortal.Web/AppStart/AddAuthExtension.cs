@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace InternalPortal.Web.AppStart
 {
-    // todo: specify session length explicity
     public static class AddAuthExtension
     {
+        // todo: tie this to the token expiration from apim (1 hour)
+        private const int SessionLength = 20; // set to 0 for a session cookie otherwise specify in mins
+
         public static void AddAuthOptions(MvcOptions options)
         {
             var policy = new AuthorizationPolicyBuilder()
@@ -26,6 +28,14 @@ namespace InternalPortal.Web.AppStart
                     {
                         options.LoginPath = "/Account/login";
                         options.LogoutPath = "/Account/logout";
+
+                        if (SessionLength != 0)
+                        {
+                            var sessionTimeSpan = TimeSpan.FromMinutes(SessionLength);
+                            options.Cookie.MaxAge = sessionTimeSpan;
+                            options.ExpireTimeSpan = sessionTimeSpan;
+                            options.SlidingExpiration = false;
+                        }
                     });
         }
     }
