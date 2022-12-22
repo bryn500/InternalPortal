@@ -27,8 +27,6 @@ namespace InternalPortal.Web.Controllers
         {
             ViewData["Title"] = "Sign In";
 
-            BreadCrumbs?.Add(new KeyValuePair<string, string>("Sign In", "/signin"));
-
             var model = new SignInViewModel();
             SetSignInFormModel(model);
 
@@ -40,7 +38,6 @@ namespace InternalPortal.Web.Controllers
         public async Task<IActionResult> Login(SignInViewModel model, CancellationToken cancellationToken)
         {
             ViewData["Title"] = "Sign In";
-            BreadCrumbs?.Add(new KeyValuePair<string, string>("Sign In", "/signin"));
 
             if (!ModelState.IsValid)
             {

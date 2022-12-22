@@ -26,7 +26,6 @@ namespace InternalPortal.Web.Controllers
         public IActionResult Accessibility()
         {
             ViewData["Title"] = "Accessibility";
-            BreadCrumbs?.Add(new KeyValuePair<string, string>("Accessibility", "/accessibility"));
             return View();
         }
 
@@ -34,7 +33,6 @@ namespace InternalPortal.Web.Controllers
         public IActionResult Terms()
         {
             ViewData["Title"] = "Terms";
-            BreadCrumbs?.Add(new KeyValuePair<string, string>("Terms", "/terms"));
             return View();
         }
 
@@ -42,7 +40,6 @@ namespace InternalPortal.Web.Controllers
         public IActionResult Cookies()
         {
             ViewData["Title"] = "Cookies";
-            BreadCrumbs?.Add(new KeyValuePair<string, string>("Cookies", "/cookies"));
             return View();
         }
     }

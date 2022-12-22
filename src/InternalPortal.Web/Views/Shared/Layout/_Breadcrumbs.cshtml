@@ -1,0 +1,13 @@
+﻿@if (ViewBag.BreadCrumbs != null && ViewBag.BreadCrumbs.Count > 0)
+{
+    <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+            @foreach (var breadcrumb in ViewBag.BreadCrumbs)
+            {
+                <li class="govuk-breadcrumbs__list-item">
+                    <a class="govuk-breadcrumbs__link" href="@breadcrumb.Value">@breadcrumb.Key</a>
+                </li>
+            }
+        </ol>
+    </div>
+}

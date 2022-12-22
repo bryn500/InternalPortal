@@ -23,7 +23,6 @@ namespace InternalPortal.Web.Controllers
         public async Task<IActionResult> Apis(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
         {
             ViewData["Title"] = "Apis";
-            BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
 
             var managedApisTask = _client.GetApisAsync(skip, take, cancellationToken);
             var otherApisTask = GetOtherApisAsync(cancellationToken);
@@ -61,7 +60,6 @@ namespace InternalPortal.Web.Controllers
             var api = new Api(apiResponse.name, apiResponse.properties.displayName, apiResponse.properties.description, apiResponse.properties.apiVersion);
             ViewData["Title"] = api.Name;
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
-            BreadCrumbs?.Add(new KeyValuePair<string, string>(api.Name, $"/apis/{api.Id}"));
 
             return View(api);
         }
@@ -77,7 +75,6 @@ namespace InternalPortal.Web.Controllers
 
             ViewData["Title"] = api.Name;
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
-            BreadCrumbs?.Add(new KeyValuePair<string, string>(api.Name, $"/apis/unmanaged/{api.Id}"));
 
             return View(api);
         }
