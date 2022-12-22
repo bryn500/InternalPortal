@@ -83,7 +83,6 @@ namespace Apim
             //var responseMessage = await _client.GetAsync($"apis?{queryString}", cancellationToken);
             //var responseContent = await responseMessage.Content.ReadAsStringAsync();
             //return JsonSerializer.Deserialize<ApisResponse>(responseContent);
-
         }
 
         /// <summary>

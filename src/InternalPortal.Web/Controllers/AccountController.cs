@@ -1,4 +1,6 @@
 ﻿using Apim;
+using InternalPortal.Web.Consts;
+using InternalPortal.Web.Filters;
 using InternalPortal.Web.Models.Auth;
 using InternalPortal.Web.Models.Shared;
 using Microsoft.AspNetCore.Authentication;
@@ -9,6 +11,7 @@ using System.Security.Claims;
 
 namespace InternalPortal.Web.Controllers
 {
+    [ActiveHeaderItemFilter(ActiveHeaderItem.Login)]
     [Route("[controller]")]
     public class AccountController : BaseController
     {

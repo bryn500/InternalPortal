@@ -1,21 +1,22 @@
 ﻿using Apim;
+using InternalPortal.Web.Consts;
+using InternalPortal.Web.Filters;
 using InternalPortal.Web.Models.Apis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace InternalPortal.Web.Controllers
 {
+    [ActiveHeaderItemFilter(ActiveHeaderItem.Apis)]
     [Route("[controller]")]
     public class ApisController : BaseController
     {
         private readonly IApimClient _client;
-        private readonly ApimOptions _apimOptions;
         private readonly ILogger<ApisController> _logger;
 
-        public ApisController(IApimClient client, IOptions<ApimOptions> apimOptions, ILogger<ApisController> logger)
+        public ApisController(IApimClient client, ILogger<ApisController> logger)
         {
             _client = client;
-            _apimOptions = apimOptions.Value;
             _logger = logger;
         }
 

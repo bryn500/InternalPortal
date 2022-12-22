@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using InternalPortal.Web.Consts;
+using InternalPortal.Web.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternalPortal.Web.Controllers
@@ -13,6 +15,7 @@ namespace InternalPortal.Web.Controllers
             _logger = logger;
         }
 
+        [ActiveHeaderItemFilter(ActiveHeaderItem.Home)]
         [HttpGet("")]
         public IActionResult Index()
         {
