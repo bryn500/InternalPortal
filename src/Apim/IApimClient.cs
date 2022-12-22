@@ -21,7 +21,7 @@ namespace Apim
         /// <param name="take"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+        Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, bool includeNext = false, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/get?tabs=HTTP

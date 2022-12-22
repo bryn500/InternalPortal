@@ -8,6 +8,7 @@
         public string ManagementApiId { get; set; }
         public string ManagementApiPrimaryKey { get; set; }
         public string BackendUrl { get; set; }
+        public bool IncludeUnmanaged { get; set; }
         //public string ProxyHostnames { get; set; }
     }
 }

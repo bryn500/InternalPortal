@@ -1,4 +1,5 @@
 ﻿using Apim;
+using Apim.Models;
 using InternalPortal.Web.Consts;
 using InternalPortal.Web.Filters;
 using InternalPortal.Web.Models.Apis;
@@ -12,11 +13,13 @@ namespace InternalPortal.Web.Controllers
     public class ApisController : BaseController
     {
         private readonly IApimClient _client;
+        private readonly ApimOptions _options;
         private readonly ILogger<ApisController> _logger;
 
-        public ApisController(IApimClient client, ILogger<ApisController> logger)
+        public ApisController(IApimClient client, IOptions<ApimOptions> options, ILogger<ApisController> logger)
         {
             _client = client;
+            _options = options.Value;
             _logger = logger;
         }
 
@@ -25,29 +28,55 @@ namespace InternalPortal.Web.Controllers
         {
             ViewData["Title"] = "Apis";
 
-            var managedApisTask = _client.GetApisAsync(skip, take, cancellationToken);
-            var otherApisTask = GetOtherApisAsync(cancellationToken);
-            await Task.WhenAll(managedApisTask, otherApisTask);
+            // validate user input
+            take = Math.Max(Math.Min(take, 64), 1);
+            skip = Math.Max(skip, 0);
 
-            var managedApis = await managedApisTask;
-            var otherApis = await otherApisTask;
+            var managedApis = await _client.GetApisAsync(skip, take, _options.IncludeUnmanaged, cancellationToken);
 
-            if (managedApis != null && managedApis.value.Any())
+            var model = new ApisViewModel(
+                managedApis?.count,
+                skip,
+                take,
+                managedApis?.value?.Select(x => new ApiViewModel(x.name, x.properties.displayName, x.properties.description, x.properties.apiVersion)).ToList()
+            );
+
+            // do in parallel with Task.WhenAll if this becomes a real feature
+            if (_options.IncludeUnmanaged)
+                await AddUnmanagedApis(skip, managedApis, model, cancellationToken);
+
+            return View(model);
+        }
+
+        private async Task AddUnmanagedApis(int skip, ApisResponse? managedApis, ApisViewModel model, CancellationToken cancellationToken)
+        {
+            var otherApis = await GetOtherApisAsync(cancellationToken);
+
+            if (otherApis != null && otherApis.Any())
             {
-                otherApis.AddRange(managedApis.value.Select(x => new Api(x.name, x.properties.displayName, x.properties.description, x.properties.apiVersion)));
+                bool firstPage = skip == 0;
+                var first = model.Apis.FirstOrDefault()?.Name;
+                var next = managedApis?.nextName;
 
-                // todo: merge lists together but keep alphabetical order while allowing paging of apim apis
-                //bool morePages = !string.IsNullOrEmpty(managedApis.nextLink);
-                //var lastApi = managedApis.value.Last();
-                //if (morePages)
-                //{
-                //    var lastInNewList = otherApis.First(x => x.Id == lastApi.id);
-                //    var last = otherApis.IndexOf(lastInNewList);
-                //    otherApis = otherApis.Take(last).ToList();
-                //}
+                foreach (var item in otherApis)
+                {
+                    var lessThanFirst = string.Compare(item.Name, first, StringComparison.Ordinal) < 0;
+                    var moreThanNext = string.Compare(item.Name, next, StringComparison.Ordinal) > 0;
+
+                    bool add = true;
+
+                    if (lessThanFirst && !firstPage)
+                        add = false;
+                    else if (!string.IsNullOrEmpty(next) && moreThanNext)
+                        add = false;
+
+                    if (add)
+                        model.Apis.Add(item);
+                }
+
+                // order alphabetically
+                model.Apis = model.Apis.OrderBy(x => x.Name).ToList();
             }
-
-            return View(otherApis.OrderBy(x => x.Name).ToList());
         }
 
         [HttpGet("{id}")]
@@ -58,7 +87,7 @@ namespace InternalPortal.Web.Controllers
             if (apiResponse == null)
                 return NotFound();
 
-            var api = new Api(apiResponse.name, apiResponse.properties.displayName, apiResponse.properties.description, apiResponse.properties.apiVersion);
+            var api = new ApiViewModel(apiResponse.name, apiResponse.properties.displayName, apiResponse.properties.description, apiResponse.properties.apiVersion);
             ViewData["Title"] = api.Name;
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
 
@@ -81,10 +110,12 @@ namespace InternalPortal.Web.Controllers
         }
 
         // example to simulate listing non apim hosted Apis
-        private async Task<List<Api>> GetOtherApisAsync(CancellationToken cancellationToken)
+        private async Task<List<ApiViewModel>> GetOtherApisAsync(CancellationToken cancellationToken)
         {
-            return await Task.FromResult(new List<Api>() {
-                new Api("unmanaged/anexample", "An example non hosted API", "This is an example of an API we could list outside of APIM")
+            return await Task.FromResult(new List<ApiViewModel>() {
+                new ApiViewModel("unmanaged/aexample", "A - example non hosted API", "This is an example of an API we could list outside of APIM"),
+                new ApiViewModel("unmanaged/mexample", "M - example non hosted API", "This is an example of an API we could list outside of APIM"),
+                new ApiViewModel("unmanaged/zexample", "Z - example non hosted API", "This is an example of an API we could list outside of APIM"),
             });
         }
     }

@@ -70,19 +70,27 @@ namespace Apim
         /// <param name="take"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>ApisResponse</returns>
-        public async Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+        public async Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, bool includeNext = false, CancellationToken cancellationToken = default)
         {
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             queryString.Add("expandApiVersionSet", "true");
             queryString.Add("$top", take.ToString());
             queryString.Add("$skip", skip.ToString());
 
-            var responseMessage = await _client.GetAsync($"{_options.SubscriptionPath}/apis?{queryString}", cancellationToken);
-            return await responseMessage.Content.ReadFromJsonAsync<ApisResponse>(cancellationToken: cancellationToken);
+            var response = await _client.GetAsync($"{_options.SubscriptionPath}/apis?{queryString}", cancellationToken);
+            var apisResponse = await response.Content.ReadFromJsonAsync<ApisResponse>(cancellationToken: cancellationToken);
 
-            //var responseMessage = await _client.GetAsync($"apis?{queryString}", cancellationToken);
-            //var responseContent = await responseMessage.Content.ReadAsStringAsync();
-            //return JsonSerializer.Deserialize<ApisResponse>(responseContent);
+            if (apisResponse == null)
+                return null;
+
+            if (includeNext)
+            {
+                // do in parallel with Task.WhenAll if unmaanged apis becomes a real feature
+                var next = await GetApisAsync(skip + take, 1, false, cancellationToken);
+                apisResponse.nextName = next?.value?.FirstOrDefault()?.properties.displayName;
+            }
+
+            return apisResponse;
         }
 
         /// <summary>

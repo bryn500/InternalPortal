@@ -2,9 +2,10 @@
 {
     public class ApisResponse
     {
-        public List<ApisValue> value { get; set; }
+        public List<ApisValue>? value { get; set; }
         public int count { get; set; }
-        public string nextLink { get; set; }
+        public string? nextLink { get; set; }
+        public string? nextName { get; set; }
     }
 
     public class ApisValue
