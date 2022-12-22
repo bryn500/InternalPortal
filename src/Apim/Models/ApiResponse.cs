@@ -1,13 +1,6 @@
 ﻿namespace Apim.Models
 {
-    public class ApisResponse
-    {
-        public List<ApisValue> value { get; set; }
-        public int count { get; set; }
-        public string nextLink { get; set; }
-    }
-
-    public class ApisValue
+    public class ApiResponse
     {
         public string id { get; set; }
         public string type { get; set; }

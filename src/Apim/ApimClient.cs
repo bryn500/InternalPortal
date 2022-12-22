@@ -1,4 +1,5 @@
 ﻿using Apim.Models;
+using Microsoft.Extensions.Options;
 using Shared;
 using System.Net.Http.Json;
 using System.Text;
@@ -9,9 +10,12 @@ namespace Apim
     public class ApimClient : IApimClient
     {
         private readonly HttpClient _client;
-        public ApimClient(HttpClient client)
+        private readonly ApimOptions _options;
+
+        public ApimClient(HttpClient client, IOptions<ApimOptions> options)
         {
             _client = client;
+            _options = options.Value;
         }
 
         /// <summary>
@@ -23,7 +27,7 @@ namespace Apim
         /// <param name="cancellationToken"></param>
         /// <returns>LoginResponse</returns>
         /// <exception cref="ArgumentException"></exception>
-        public Task<LoginResponse> Auth(string? userName, string? password, CancellationToken cancellationToken = default)
+        public Task<LoginResponse> AuthAsync(string? userName, string? password, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new ArgumentException("no username provided");
@@ -39,7 +43,7 @@ namespace Apim
             byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes($"{userName}:{password}");
             var authHeader = $"Basic {Convert.ToBase64String(toEncodeAsBytes)}";
 
-            var response = await _client.GetWithHeadersAsync("/identity", new Dictionary<string, string>()
+            var response = await _client.GetWithHeadersAsync($"{_options.SubscriptionPath}/identity", new Dictionary<string, string>()
             {
                 ["Authorization"] = authHeader
             }, cancellationToken);
@@ -66,15 +70,35 @@ namespace Apim
         /// <param name="take"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>ApisResponse</returns>
-        public async Task<ApisResponse?> GetApis(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+        public async Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
         {
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             queryString.Add("expandApiVersionSet", "true");
             queryString.Add("$top", take.ToString());
             queryString.Add("$skip", skip.ToString());
 
-            var responseMessage = await _client.GetAsync($"/apis?{queryString}", cancellationToken);
+            var responseMessage = await _client.GetAsync($"{_options.SubscriptionPath}/apis?{queryString}", cancellationToken);
             return await responseMessage.Content.ReadFromJsonAsync<ApisResponse>(cancellationToken: cancellationToken);
+
+            //var responseMessage = await _client.GetAsync($"apis?{queryString}", cancellationToken);
+            //var responseContent = await responseMessage.Content.ReadAsStringAsync();
+            //return JsonSerializer.Deserialize<ApisResponse>(responseContent);
+
+        }
+
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/get?tabs=HTTP
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse?> GetApiAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString.Add("expandApiVersionSet", "true");
+
+            var responseMessage = await _client.GetAsync($"{_options.SubscriptionPath}/apis/{id}?{queryString}", cancellationToken);
+            return await responseMessage.Content.ReadFromJsonAsync<ApiResponse>(cancellationToken: cancellationToken);
         }
     }
 }

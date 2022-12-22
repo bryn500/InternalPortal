@@ -79,3 +79,20 @@ select.input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+
+/*
+    Custom styles
+*/
+.badge {
+    background: none;
+    border: 1px solid #1d70b8;
+    color: #1d70b8;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    line-height: 1.7em;
+    display: inline-block;
+    padding: 0 5px;
+    margin: 0 0 10px 0;
+    vertical-align: middle;
+}

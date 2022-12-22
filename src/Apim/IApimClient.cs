@@ -12,7 +12,7 @@ namespace Apim
         /// <param name="password">user password</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<LoginResponse> Auth(string? userName, string? password, CancellationToken cancellationToken = default);
+        Task<LoginResponse> AuthAsync(string? userName, string? password, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/list-by-service?tabs=HTTP
@@ -21,6 +21,14 @@ namespace Apim
         /// <param name="take"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ApisResponse?> GetApis(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+        Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/get?tabs=HTTP
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ApiResponse?> GetApiAsync(string id, CancellationToken cancellationToken = default);
     }
 }

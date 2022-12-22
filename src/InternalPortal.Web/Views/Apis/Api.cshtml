@@ -1,0 +1,13 @@
+﻿@model Api
+
+<h1 class="govuk-heading-xl">
+    @ViewData["Title"]
+</h1>
+
+@if (!string.IsNullOrEmpty(Model.Version))
+{
+    <div class="badge">
+        @Model.Version
+    </div>
+}
+<p>@Model.Description</p>

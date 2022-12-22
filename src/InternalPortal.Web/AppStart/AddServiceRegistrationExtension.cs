@@ -13,7 +13,7 @@ namespace InternalPortal.Web.AppStart
             services.AddScoped<IApimClient, ApimClient>();
 
             services
-                .AddHttpClient<IApimClient, ApimClient>(c => c.BaseAddress = new Uri(apimOptions.ManagementApiUrl))
+                .AddHttpClient<IApimClient, ApimClient>(c => c.BaseAddress = new Uri(apimOptions.BackendUrl))
                 .AddHttpMessageHandler<ApimDefaultHandler>();
         }
     }

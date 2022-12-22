@@ -51,7 +51,7 @@ namespace InternalPortal.Web.Controllers
 
             try
             {
-                var result = await _client.Auth(model.Username, model.Password, cancellationToken);
+                var result = await _client.AuthAsync(model.Username, model.Password, cancellationToken);
                 // todo: second call to get user details for profile
                 // todo: enforce single user session at a time
                 var claims = new List<Claim>
