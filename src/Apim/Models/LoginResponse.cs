@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Security.Authentication;
+using System.Text.RegularExpressions;
 
 namespace Apim.Models
 {
@@ -10,14 +11,17 @@ namespace Apim.Models
 
         public string AccessToken { get; }
 
-        public LoginResponse(string accessTokenResponse, string identifier)
+        public LoginResponse(string accessTokenResponse, UserIdResponse? identifier)
         {
-            Identifier = identifier;
+            if (identifier == null || string.IsNullOrWhiteSpace(identifier.id))
+                throw new AuthenticationException("Failed to login");
+
+            Identifier = identifier.id;
 
             var match = tokenRegex.Match(accessTokenResponse);
 
             if (!match.Success)
-                throw new Exception("Failed to login");
+                throw new AuthenticationException("Failed to login");
 
             AccessToken = match.Groups[1].Value;
         }

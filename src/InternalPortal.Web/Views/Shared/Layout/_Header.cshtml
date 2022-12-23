@@ -16,7 +16,7 @@
             <a href="#" class="govuk-header__link govuk-header__service-name">
                 @Consts.AppName
             </a>
-            <nav aria-label="Menu" class="govuk-header__navigation ">
+            <nav aria-label="Menu" class="govuk-header__navigation govuk-header__navigation--1st">
                 <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
                 <ul id="navigation" class="govuk-header__navigation-list">
                     @{
@@ -24,6 +24,7 @@
                         var homeActiveClass = ViewBag.ActiveHeaderItem == ActiveHeaderItem.Home ? activeClass : "";
                         var apisActiveClass = ViewBag.ActiveHeaderItem == ActiveHeaderItem.Apis ? activeClass : "";
                         var loginActiveClass = ViewBag.ActiveHeaderItem == ActiveHeaderItem.Login ? activeClass : "";
+                        var profileActiveClass = ViewBag.ActiveHeaderItem == ActiveHeaderItem.Profile ? activeClass : "";
                     }
 
                     <li class="govuk-header__navigation-item @homeActiveClass">
@@ -36,7 +37,15 @@
                             Apis
                         </a>
                     </li>
-                    @if (User.Identity.IsAuthenticated)
+                    @if (!string.IsNullOrEmpty(ViewBag.Username))
+                    {
+                        <li class="govuk-header__navigation-item @profileActiveClass">
+                            <a class="govuk-header__link" href="/account/profile">
+                                @ViewBag.Username
+                            </a>
+                        </li>
+                    }
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <li class="govuk-header__navigation-item">
                             <a class="govuk-header__link" href="/account/logout">

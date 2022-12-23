@@ -15,13 +15,29 @@ namespace Apim
         Task<LoginResponse> AuthAsync(string? userName, string? password, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Gets details user
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ApimResponse<UserResponse>?> GetUserDetailsAsync(string? userid, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets groups of user
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<CollectionResponse<ApimResponse<GroupResponse>>?> GetUserGroupsAsync(string? userid, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/list-by-service?tabs=HTTP
         /// </summary>
         /// <param name="skip"></param>
         /// <param name="take"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ApisResponse?> GetApisAsync(int skip = 0, int take = 10, bool includeNext = false, CancellationToken cancellationToken = default);
+        Task<ApisResponse<ApimResponse<ApiResponse>>?> GetApisAsync(int skip = 0, int take = 10, bool includeNext = false, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/get?tabs=HTTP
@@ -29,6 +45,6 @@ namespace Apim
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ApiResponse?> GetApiAsync(string id, CancellationToken cancellationToken = default);
+        Task<ApimResponse<ApiResponse>?> GetApiAsync(string id, CancellationToken cancellationToken = default);
     }
 }

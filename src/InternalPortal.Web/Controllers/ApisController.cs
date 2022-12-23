@@ -48,7 +48,7 @@ namespace InternalPortal.Web.Controllers
             return View(model);
         }
 
-        private async Task AddUnmanagedApis(int skip, ApisResponse? managedApis, ApisViewModel model, CancellationToken cancellationToken)
+        private async Task AddUnmanagedApis(int skip, ApisResponse<ApimResponse<ApiResponse>>? managedApis, ApisViewModel model, CancellationToken cancellationToken)
         {
             var otherApis = await GetOtherApisAsync(cancellationToken);
 
@@ -87,7 +87,7 @@ namespace InternalPortal.Web.Controllers
             if (apiResponse == null)
                 return NotFound();
 
-            var api = new ApiViewModel(apiResponse.name, apiResponse.properties.displayName, apiResponse.properties.description, apiResponse.properties.apiVersion);
+            var api = new ApiViewModel(apiResponse.name, apiResponse.properties?.displayName, apiResponse.properties?.description, apiResponse.properties?.apiVersion);
             ViewData["Title"] = api.Name;
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
 

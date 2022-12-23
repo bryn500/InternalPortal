@@ -1,6 +1,7 @@
 ﻿using InternalPortal.Web.Consts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
 namespace InternalPortal.Web.Controllers
 {
@@ -18,6 +19,7 @@ namespace InternalPortal.Web.Controllers
             ViewBag.MetaTags = MetaTags;
             ViewBag.BreadCrumbs = BreadCrumbs;
             ViewBag.HideConsentMessage = Request.Cookies.ContainsKey(CookieNames.HideConsentMessage);
+            ViewBag.Username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
             base.OnActionExecuted(context);
         }

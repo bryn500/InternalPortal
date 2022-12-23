@@ -5,5 +5,6 @@
         public const string Home = "Home";
         public const string Apis = "Apis";
         public const string Login = "Login";
+        public const string Profile = "Profile";
     }
 }

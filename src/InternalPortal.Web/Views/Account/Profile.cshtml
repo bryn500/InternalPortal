@@ -1,0 +1,27 @@
+﻿@model ProfileViewModel
+
+<h1 class="govuk-heading-xl">
+    @ViewData["Title"]
+</h1>
+
+<table class="govuk-table">
+    <caption class="govuk-table__caption govuk-heading-l">Account information</caption>
+    <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Email</th>
+            <td class="govuk-table__cell">@Model.Email</td>
+        </tr>
+        <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">First name</th>
+            <td class="govuk-table__cell">@Model.FirstName</td>
+        </tr>
+        <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Last name</th>
+            <td class="govuk-table__cell">@Model.LastName</td>
+        </tr>
+        <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Registration date</th>
+            <td class="govuk-table__cell">@Model.RegistrationDate</td>
+        </tr>
+    </tbody>
+</table>
