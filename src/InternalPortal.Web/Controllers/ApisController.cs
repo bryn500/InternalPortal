@@ -38,7 +38,7 @@ namespace InternalPortal.Web.Controllers
                 managedApis?.count,
                 skip,
                 take,
-                managedApis?.value?.Select(x => new ApiViewModel(x.name, x.properties.displayName, x.properties.description, x.properties.apiVersion)).ToList()
+                managedApis?.value?.Select(x => new ApiViewModel(x.name, x.properties?.displayName, x.properties?.description, x.properties?.apiVersion)).ToList()
             );
 
             // do in parallel with Task.WhenAll if this becomes a real feature
@@ -60,11 +60,13 @@ namespace InternalPortal.Web.Controllers
 
                 foreach (var item in otherApis)
                 {
+                    // compare strings alphabetically
                     var lessThanFirst = string.Compare(item.Name, first, StringComparison.Ordinal) < 0;
                     var moreThanNext = string.Compare(item.Name, next, StringComparison.Ordinal) > 0;
 
                     bool add = true;
 
+                    // add to unmanged api to current page if alphabetically relevant
                     if (lessThanFirst && !firstPage)
                         add = false;
                     else if (!string.IsNullOrEmpty(next) && moreThanNext)
@@ -87,11 +89,30 @@ namespace InternalPortal.Web.Controllers
             if (apiResponse == null)
                 return NotFound();
 
-            var api = new ApiViewModel(apiResponse.name, apiResponse.properties?.displayName, apiResponse.properties?.description, apiResponse.properties?.apiVersion);
+            var apiOperations = await _client.GetOperations(id, cancellationToken);
+
+            var api = new ApiViewModel(apiResponse.name, apiResponse.properties?.displayName, apiResponse.properties?.description, apiResponse.properties?.apiVersion, apiOperations?.value);
             ViewData["Title"] = api.Name;
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
 
             return View(api);
+        }
+
+        [HttpGet("{id}/definition")]
+        public async Task<IActionResult> ApiDefinition(string id, string type, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+                return NotFound();
+
+            var responseMessage = await _client.GetApiAsync(id, type, cancellationToken);
+
+            Response.StatusCode = (int)responseMessage.StatusCode;
+
+            Response.Headers.Add("content-disposition", "attachment; filename=\"" + id + ".yml\"");
+
+            await responseMessage.Content.CopyToAsync(Response.Body);
+
+            return Ok();
         }
 
         [HttpGet("unmanaged/{id}")]

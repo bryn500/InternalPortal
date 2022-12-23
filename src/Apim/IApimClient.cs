@@ -6,7 +6,6 @@ namespace Apim
     {
         /// <summary>
         /// Login user
-        /// https://github.com/Azure/api-management-developer-portal/blob/master/src/services/usersService.ts
         /// </summary>
         /// <param name="userName">User email</param>
         /// <param name="password">user password</param>
@@ -15,7 +14,7 @@ namespace Apim
         Task<LoginResponse> AuthAsync(string? userName, string? password, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets details user
+        /// Gets details of a user
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="cancellationToken"></param>
@@ -23,7 +22,7 @@ namespace Apim
         Task<ApimResponse<UserResponse>?> GetUserDetailsAsync(string? userid, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets groups of user
+        /// Gets groups of a user
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="cancellationToken"></param>
@@ -31,7 +30,7 @@ namespace Apim
         Task<CollectionResponse<ApimResponse<GroupResponse>>?> GetUserGroupsAsync(string? userid, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/list-by-service?tabs=HTTP
+        /// Gets a paged list of apis
         /// </summary>
         /// <param name="skip"></param>
         /// <param name="take"></param>
@@ -40,11 +39,27 @@ namespace Apim
         Task<ApisResponse<ApimResponse<ApiResponse>>?> GetApisAsync(int skip = 0, int take = 10, bool includeNext = false, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/get?tabs=HTTP
+        /// Gets an individual API
         /// </summary>
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ApimResponse<ApiResponse>?> GetApiAsync(string id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets an API definition by type
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<HttpResponseMessage> GetApiAsync(string id, string type, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets operations for an api
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<CollectionResponse<ApimResponse<OperationResponse>>?> GetOperations(string id, CancellationToken cancellationToken = default);
     }
 }

@@ -96,3 +96,9 @@ select.input-validation-error {
     margin: 0 0 10px 0;
     vertical-align: middle;
 }
+
+.govuk-details__summary .details-tag, .govuk-details__summary .details-title {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+}

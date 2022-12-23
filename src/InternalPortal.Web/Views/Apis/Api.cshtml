@@ -10,4 +10,113 @@
         @Model.Version
     </div>
 }
-<p>@Model.Description</p>
+
+<section class="govuk-!-margin-bottom-6">
+    <h2 class="govuk-heading-l" id="Overview">Overview</h2>
+    <p class="govuk-body">@Model.Description</p>
+</section>
+
+<section class="govuk-!-margin-bottom-6">
+    <h2 class="govuk-heading-l" id="Overview">Api Definition</h2>
+    <a class="govuk-link" href="/apis/@Model.Id/definition?type=application/vnd.oai.openapi">Open Api 3 (YAML)</a>
+</section>
+
+<section class="govuk-!-margin-bottom-6">
+    <h2 class="govuk-heading-l" id="Overview">Endpoints</h2>
+
+    @if (Model.Operations != null)
+    {
+        @foreach (var operation in Model.Operations)
+        {
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <div class="details-title">
+                        <span class="govuk-details__summary-text">
+                            @operation?.properties?.urlTemplate
+                        </span>
+                    </div>
+                    <div class="details-tag">
+                        <strong class="govuk-tag govuk-tag-round govuk-tag--blue">@operation?.properties?.method</strong>
+                    </div>
+                </summary>
+                <div class="govuk-details__text">
+                    <h3 class="govuk-heading-s">Description</h3>
+                    <p class="govuk-body">@operation?.properties?.description</p>
+
+                    @if (operation?.properties?.templateParameters != null && operation.properties.templateParameters.Count > 0)
+                    {
+                        <table class="govuk-table govuk-!-margin-top-7">
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header">Parameter name</th>
+                                    <th scope="col" class="govuk-table__header">Type</th>
+                                    <th scope="col" class="govuk-table__header">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="govuk-table__body">
+                                @foreach (var param in @operation.properties.templateParameters)
+                                {
+                                    <tr class="govuk-table__row">
+                                        <th scope="row" class="govuk-table__header">@param.name</th>
+                                        <td class="govuk-table__cell">@param.type</td>
+                                        <td class="govuk-table__cell">@param.description</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+
+                    @if (operation?.properties?.request != null)
+                    {
+                        @if (operation.properties.request.headers != null && operation.properties.request.headers.Count > 0)
+                        {
+                            <table class="govuk-table govuk-!-margin-top-7">
+                                <thead class="govuk-table__head">
+                                    <tr class="govuk-table__row">
+                                        <th scope="col" class="govuk-table__header">Header name</th>
+                                        <th scope="col" class="govuk-table__header">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="govuk-table__body">
+                                    @foreach (var header in @operation.properties.request.headers)
+                                    {
+                                        <tr class="govuk-table__row">
+                                            <th scope="row" class="govuk-table__header">@header.name</th>
+                                            <td class="govuk-table__cell">@header.description</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                        @if (operation.properties.request.representations != null && operation.properties.request.representations.Count > 0)
+                        {
+                            @foreach (var rep in operation.properties.request.representations)
+                            {
+                                <pre><code>@rep.generatedSample</code></pre>
+                            }
+                        }
+                    }
+
+                    @if (operation?.properties?.responses != null)
+                    {
+                        @foreach (var response in operation.properties.responses)
+                        {
+                            <h3>@response.statusCode</h3>
+                            <p class="govuk-body">
+                                @response.description
+                            </p>
+                            @if (response.representations != null && response.representations.Count > 0)
+                            {
+                                @foreach (var rep in response.representations)
+                                {
+                                    <pre><code>@rep.generatedSample</code></pre>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </details>
+        }
+    }
+</section>

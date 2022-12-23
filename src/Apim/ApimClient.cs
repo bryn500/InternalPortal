@@ -20,7 +20,6 @@ namespace Apim
         }
 
         /// <summary>
-        /// Login user
         /// https://github.com/Azure/api-management-developer-portal/blob/master/src/services/usersService.ts
         /// </summary>
         /// <param name="userName"></param>
@@ -66,7 +65,7 @@ namespace Apim
 
 
         /// <summary>
-        /// Gets details user
+        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/user/get?tabs=HTTP
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="cancellationToken"></param>
@@ -78,7 +77,7 @@ namespace Apim
         }
 
         /// <summary>
-        /// Gets groups of user
+        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/user-group/list?tabs=HTTP
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="cancellationToken"></param>
@@ -132,6 +131,33 @@ namespace Apim
 
             var responseMessage = await _client.GetAsync($"{_options.SubscriptionPath}/apis/{id}?{queryString}", cancellationToken);
             return await responseMessage.Content.ReadFromJsonAsync<ApimResponse<ApiResponse>>(cancellationToken: cancellationToken);
+        }
+
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/apis/get?tabs=HTTP
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<HttpResponseMessage> GetApiAsync(string id, string type, CancellationToken cancellationToken = default)
+        {
+            var headers = new Dictionary<string, string>() {
+                { "Accept", type }
+            };
+
+            return _client.GetWithHeadersAsync($"{_options.SubscriptionPath}/apis/{id}", headers, cancellationToken);
+        }
+
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/api-operation/list-by-api?tabs=HTTP
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<CollectionResponse<ApimResponse<OperationResponse>>?> GetOperations(string id, CancellationToken cancellationToken = default)
+        {
+            var responseMessage = await _client.GetAsync($"{_options.SubscriptionPath}/apis/{id}/operations", cancellationToken);
+            return await responseMessage.Content.ReadFromJsonAsync< CollectionResponse<ApimResponse<OperationResponse>>>(cancellationToken: cancellationToken);
         }
     }
 }
