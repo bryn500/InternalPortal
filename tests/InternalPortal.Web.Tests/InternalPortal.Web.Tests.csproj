@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\src\InternalPortal.Web\InternalPortal.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Auth\" />
+  </ItemGroup>
+
 </Project>
