@@ -1,6 +1,6 @@
-﻿using Apim.Models;
+﻿using Apim.Extensions;
+using Apim.Models;
 using Microsoft.Extensions.Options;
-using Shared;
 using System.Net.Http.Json;
 using System.Security.Authentication;
 using System.Text;

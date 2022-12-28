@@ -1,4 +1,4 @@
-﻿namespace Shared
+﻿namespace Apim.Extensions
 {
     public static class HttpClientExtensions
     {
