@@ -4,9 +4,18 @@
     {
         public static string ToGdsString(this DateTime dateTime)
         {
-            var gmt = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            DateTimeOffset timeInGmt = TimeZoneInfo.ConvertTime(dateTime, gmt);
-            return timeInGmt.ToString("d MMMM yyyy"); //4 June 2017
+            if (dateTime.Kind == DateTimeKind.Utc)
+            {
+                var date = TimeZoneInfo.ConvertTimeFromUtc(dateTime, TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
+                return GetGdsDate(date);
+            }
+
+            return GetGdsDate(dateTime);
+        }
+
+        private static string GetGdsDate(DateTimeOffset dateTime)
+        {
+            return dateTime.ToString("d MMMM yyyy"); //4 June 2017
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using InternalPortal.Web.Consts;
 using InternalPortal.Web.Extensions;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace InternalPortal.Web.Models.Auth
@@ -32,7 +33,7 @@ namespace InternalPortal.Web.Models.Auth
                         Email = claim.Value;
                         break;
                     case CustomClaimTypes.RegistrationDate:
-                        var success = DateTime.TryParse(claim.Value, out DateTime date);
+                        var success = DateTime.TryParse(claim.Value, null, DateTimeStyles.RoundtripKind, out DateTime date);
                         if (success) RegistrationDate = date.ToGdsString();
                         break;
                     case CustomClaimTypes.Developer:

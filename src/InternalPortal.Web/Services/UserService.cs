@@ -70,7 +70,7 @@ namespace InternalPortal.Web.Services
                 claims.Add(new Claim(ClaimTypes.Name, $"{userDetails.properties.firstName} {userDetails.properties.lastName}".Trim()));
 
             if (userDetails.properties.registrationDate != null)
-                claims.Add(new Claim(CustomClaimTypes.RegistrationDate, userDetails.properties.registrationDate.Value.ToString()));
+                claims.Add(new Claim(CustomClaimTypes.RegistrationDate, userDetails.properties.registrationDate.Value.ToString("o")));
 
             var devGroup = groups?.value?.FirstOrDefault(x => x.name == "developers");
             if (devGroup != null)
