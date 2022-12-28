@@ -75,9 +75,9 @@ namespace InternalPortal.Web.Controllers
         }
 
         [HttpGet("userdetails")]
-        public async Task<IActionResult> UserDetails(string returnUrl, CancellationToken cancellationToken)
+        public async Task<IActionResult> UserDetails(string returnUrl, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrWhiteSpace(returnUrl))
+            if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl))
                 return NotFound();
 
             var id = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);

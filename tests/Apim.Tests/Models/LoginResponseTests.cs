@@ -1,4 +1,5 @@
 using Apim.Models;
+using System.Security.Authentication;
 
 namespace Apim.Tests.Models
 {
@@ -10,13 +11,58 @@ namespace Apim.Tests.Models
         {
             // arrange
             var token = "token=\"abc123\",refresh=\"true\"";
-            var response = new LoginResponse(token, new UserIdResponse());
 
             // act
-            var result = response.AccessToken;
+            var response = new LoginResponse(token, new UserIdResponse() { id = "a" });
 
             // assert
-            Assert.AreEqual("abc123", result);
+            Assert.AreEqual("abc123", response.AccessToken);
+            Assert.AreEqual("a", response.Identifier);
+        }
+
+        [TestMethod]
+        public void LoginResponse_Throws_WithNull()
+        {
+            try
+            {
+                _ = new LoginResponse("", null);
+            }
+            catch (AuthenticationException)
+            {
+                return;
+            }
+
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void LoginResponse_Throws_WithNoId()
+        {
+            try
+            {
+                _ = new LoginResponse("", new UserIdResponse());
+            }
+            catch (AuthenticationException)
+            {
+                return;
+            }
+
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void LoginResponse_Throws_WithBadAccessToken()
+        {
+            try
+            {
+                _ = new LoginResponse("####", new UserIdResponse() { id = "a"});
+            }
+            catch (AuthenticationException)
+            {
+                return;
+            }
+
+            Assert.Fail();
         }
     }
 }

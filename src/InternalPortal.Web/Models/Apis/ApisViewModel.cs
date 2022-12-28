@@ -6,6 +6,8 @@
         public int Skipped { get; set; }
         public int Taken { get; set; }
         public List<ApiViewModel> Apis { get; set; }
+
+        public string? NextApiName { get; set; }
                 
 
         public bool ShowPreviousLink
@@ -25,12 +27,13 @@
         public int TotalPages
         { get { return (int)Math.Ceiling((double)Total / Taken); } }
 
-        public ApisViewModel(int? total, int skipped, int taken, List<ApiViewModel>? apis = null)
+        public ApisViewModel(int? total, int skipped, int taken, List<ApiViewModel>? apis = null, string? nextApiName = null)
         {
             Total = total.HasValue ? total.Value : 0;
             Skipped = skipped;
             Taken = taken < 1 ? 1 : taken;
             Apis = apis != null ? apis : new List<ApiViewModel>();
+            NextApiName = nextApiName;
         }
     }
 }

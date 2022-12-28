@@ -63,7 +63,6 @@ namespace Apim
             return new LoginResponse(accessToken, responseContent);
         }
 
-
         /// <summary>
         /// https://learn.microsoft.com/en-us/rest/api/apimanagement/current-ga/user/get?tabs=HTTP
         /// </summary>
