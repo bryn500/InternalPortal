@@ -17,15 +17,17 @@ namespace InternalPortal.Web.Tests.Filters
         {
             //arrange
             var actionFilter = new OperationCancelledExceptionFilterAttribute(new NullLoggerFactory());
-            var httpContext = new DefaultHttpContext();
 
-            var actionContext = new ActionContext(httpContext,
+            var actionContext = new ActionContext(
+                new DefaultHttpContext(),
                 new RouteData(),
                 new ActionDescriptor(),
                 new ModelStateDictionary());
 
-            var exceptionContext = new ExceptionContext(actionContext, new List<IFilterMetadata>());
-            exceptionContext.Exception = new OperationCanceledException();
+            var exceptionContext = new ExceptionContext(actionContext, new List<IFilterMetadata>())
+            {
+                Exception = new OperationCanceledException()
+            };
 
             //act
             actionFilter.OnException(exceptionContext);
@@ -41,15 +43,17 @@ namespace InternalPortal.Web.Tests.Filters
         {
             //arrange
             var actionFilter = new OperationCancelledExceptionFilterAttribute(new NullLoggerFactory());
-            var httpContext = new DefaultHttpContext();
 
-            var actionContext = new ActionContext(httpContext,
+            var actionContext = new ActionContext(
+                new DefaultHttpContext(),
                 new RouteData(),
                 new ActionDescriptor(),
                 new ModelStateDictionary());
 
-            var exceptionContext = new ExceptionContext(actionContext, new List<IFilterMetadata>());
-            exceptionContext.Exception = new Exception();
+            var exceptionContext = new ExceptionContext(actionContext, new List<IFilterMetadata>())
+            {
+                Exception = new Exception()
+            };
 
             //act
             actionFilter.OnException(exceptionContext);

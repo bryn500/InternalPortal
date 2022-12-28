@@ -19,9 +19,9 @@ namespace InternalPortal.Web.Tests.Filters
             var requiredHeader = "Test";
             var actionFilter = new ActiveHeaderItemFilterAttribute(requiredHeader);
             var homeController = new HomeController(null);
-            var httpContext = new DefaultHttpContext();
 
-            var actionContext = new ActionContext(httpContext,
+            var actionContext = new ActionContext(
+                new DefaultHttpContext(),
                 new RouteData(),
                 new ActionDescriptor(),
                 new ModelStateDictionary());
