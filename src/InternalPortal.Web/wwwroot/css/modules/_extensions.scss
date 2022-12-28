@@ -1,0 +1,26 @@
+﻿/* .NET error classes extending govuk error styles */
+.input-validation-error {
+    @extend .govuk-input--error;
+}
+
+textarea.input-validation-error {
+    @extend .govuk-textarea--error;
+}
+
+// govuk-select styles overide govuk-input--error
+// also requires padding change
+select.input-validation-error {
+    @extend .govuk-input--error;
+    padding: 3px;
+}
+
+.field-validation-error {
+    @extend .govuk-error-message;
+    margin-bottom: 0;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.validation-summary-valid {
+    display: none;
+}

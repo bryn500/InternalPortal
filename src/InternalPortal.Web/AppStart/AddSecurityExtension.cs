@@ -5,7 +5,7 @@ namespace InternalPortal.Web.AppStart
 {
     public static class AddSecurityExtension
     {
-        private const string LocalHost = "wss://localhost:44313 wss://localhost:44311";
+        private const string LocalHost = "wss://localhost:44313"; // todo: lookup localhost port
 
         public static void AddSecurity(this IServiceCollection services)
         {
@@ -41,7 +41,8 @@ namespace InternalPortal.Web.AppStart
                     .FromSelf();
 
                 // mini profiler
-                if (env.IsDevelopment()) csp.AllowStyles.AllowUnsafeInline();
+                if (env.IsDevelopment()) 
+                    csp.AllowStyles.AllowUnsafeInline();
 
                 // Images allowed from:
                 csp.AllowImages

@@ -1,6 +1,5 @@
 ﻿using InternalPortal.Web.AppStart;
 using InternalPortal.Web.Filters;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternalPortal.Web
@@ -17,7 +16,7 @@ namespace InternalPortal.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            //var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             // Get config options
             services.AddConfigRegistration(Configuration);
@@ -45,8 +44,8 @@ namespace InternalPortal.Web
 
             services.AddAuth();
 
-            services.Configure<SecurityStampValidatorOptions>(o =>
-                o.ValidationInterval = TimeSpan.FromSeconds(10));
+            //services.Configure<SecurityStampValidatorOptions>(o =>
+            //    o.ValidationInterval = TimeSpan.FromSeconds(10));
 
             // Add/configure MVC
             services.AddMvc(options =>

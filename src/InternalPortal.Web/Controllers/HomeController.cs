@@ -1,4 +1,5 @@
-﻿using InternalPortal.Web.Consts;
+﻿using InternalPortal.Web.AppStart;
+using InternalPortal.Web.Consts;
 using InternalPortal.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace InternalPortal.Web.Controllers
         }
 
         [ActiveHeaderItemFilter(ActiveHeaderItem.Home)]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [HttpGet("")]
         public IActionResult Index()
         {
@@ -25,6 +27,7 @@ namespace InternalPortal.Web.Controllers
             return View();
         }
 
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [HttpGet("accessibility")]
         public IActionResult Accessibility()
         {
@@ -32,6 +35,7 @@ namespace InternalPortal.Web.Controllers
             return View();
         }
 
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [HttpGet("terms")]
         public IActionResult Terms()
         {
@@ -39,6 +43,7 @@ namespace InternalPortal.Web.Controllers
             return View();
         }
 
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [HttpGet("cookies")]
         public IActionResult Cookies()
         {

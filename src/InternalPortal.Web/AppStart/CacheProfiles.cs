@@ -4,21 +4,16 @@ namespace InternalPortal.Web.AppStart
 {
     public static class CacheProfiles
     {
+        public const string Default = "Default";
+
         public static void AddCacheProfiles(MvcOptions options)
         {
-            options.CacheProfiles.Add("Default",
+            options.CacheProfiles.Add(Default,
                 new CacheProfile()
                 {
                     VaryByHeader = "Accept-Encoding",
-                    Location = ResponseCacheLocation.Client,
-                    Duration = 120
-                });
-
-            options.CacheProfiles.Add("Never",
-                new CacheProfile()
-                {
-                    Location = ResponseCacheLocation.None,
-                    NoStore = true
+                    Location = ResponseCacheLocation.Any,
+                    Duration = 300
                 });
         }
     }

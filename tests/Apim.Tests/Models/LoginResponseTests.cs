@@ -10,7 +10,7 @@ namespace Apim.Tests.Models
         {
             // arrange
             var token = "token=\"abc123\",refresh=\"true\"";
-            var response = new LoginResponse(token, "");
+            var response = new LoginResponse(token, new UserIdResponse());
 
             // act
             var result = response.AccessToken;

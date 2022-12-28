@@ -8,7 +8,7 @@ namespace InternalPortal.Web.AppStart
         public static void AddCachingAndCompression(this IServiceCollection services)
         {
             // Configure Compression level
-            services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
 
             // Add Response compression services
             services.AddResponseCompression(options =>

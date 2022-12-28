@@ -8,6 +8,8 @@ namespace InternalPortal.Web.AppStart
     public static class AddAuthExtension
     {
         // todo: tie this to the token expiration from apim (1 hour)
+        // todo: use an in memory store of security stamps linked to users, update on login and check on request
+        // todo: add rate limit
         private const int SessionLength = 20; // set to 0 for a session cookie otherwise specify in mins
 
         public static void AddAuthOptions(MvcOptions options)

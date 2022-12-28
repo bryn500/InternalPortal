@@ -9,11 +9,17 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\css\all.scss" />
+    <Content Remove="wwwroot\css\modules\_common.scss" />
+    <Content Remove="wwwroot\css\modules\_custom.scss" />
+    <Content Remove="wwwroot\css\modules\_extensions.scss" />
     <Content Remove="wwwroot\js\govuk\all.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\css\all.scss" />
+    <None Include="wwwroot\css\modules\_custom.scss" />
+    <None Include="wwwroot\css\modules\_extensions.scss" />
+    <None Include="wwwroot\css\modules\_common.scss" />
     <None Include="wwwroot\js\govuk\all.js" />
   </ItemGroup>
 

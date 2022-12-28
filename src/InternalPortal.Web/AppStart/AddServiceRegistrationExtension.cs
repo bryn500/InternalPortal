@@ -1,4 +1,5 @@
 ﻿using Apim;
+using InternalPortal.Web.Service;
 
 namespace InternalPortal.Web.AppStart
 {
@@ -11,6 +12,7 @@ namespace InternalPortal.Web.AppStart
 
             services.AddScoped<ApimDefaultHandler>();
             services.AddScoped<IApimClient, ApimClient>();
+            services.AddScoped<IUserService, UserService>();
 
             services
                 .AddHttpClient<IApimClient, ApimClient>(c => c.BaseAddress = new Uri(apimOptions.BackendUrl))

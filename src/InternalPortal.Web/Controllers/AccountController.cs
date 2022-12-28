@@ -1,8 +1,8 @@
-﻿using Apim;
-using InternalPortal.Web.Consts;
+﻿using InternalPortal.Web.Consts;
 using InternalPortal.Web.Filters;
 using InternalPortal.Web.Models.Auth;
 using InternalPortal.Web.Models.Shared;
+using InternalPortal.Web.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -15,13 +15,13 @@ namespace InternalPortal.Web.Controllers
     [Route("[controller]")]
     public class AccountController : BaseController
     {
-        private readonly IApimClient _client;
+        private readonly IUserService _userService;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IApimClient client, ILogger<AccountController> logger)
+        public AccountController(IUserService userService, ILogger<AccountController> logger)
         {
             _logger = logger;
-            _client = client;
+            _userService = userService;
         }
 
         [ActiveHeaderItemFilter(ActiveHeaderItem.Login)]
@@ -44,7 +44,7 @@ namespace InternalPortal.Web.Controllers
         {
             ViewData["Title"] = "Login";
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || string.IsNullOrWhiteSpace(model.Username) || string.IsNullOrWhiteSpace(model.Password))
             {
                 ViewData["Title"] = "Error: " + ViewData["Title"];
                 SetSignInFormModel(model);
@@ -53,7 +53,7 @@ namespace InternalPortal.Web.Controllers
 
             try
             {
-                var principal = await GetLogin(model, cancellationToken);
+                var principal = await _userService.GetLogin(model.Username, model.Password, cancellationToken);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
@@ -84,7 +84,7 @@ namespace InternalPortal.Web.Controllers
                 if (id == null)
                     throw new AuthenticationException("Could not find user");
 
-                List<Claim> extraClaims = await GetUserDetails(id.Value, cancellationToken);
+                List<Claim> extraClaims = await _userService.GetUserDetails(id.Value, cancellationToken);
 
                 if (extraClaims.Any() && User.Identity != null)
                 {
@@ -136,57 +136,5 @@ namespace InternalPortal.Web.Controllers
                 Type = "password"
             };
         }
-
-        #region todo: move below logic out of controller
-        private async Task<ClaimsPrincipal> GetLogin(SignInViewModel model, CancellationToken cancellationToken)
-        {
-            var auth = await _client.AuthAsync(model.Username, model.Password, cancellationToken);
-
-            // todo: enforce single user session at a time with security stamp
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Authentication, auth.AccessToken),
-                    new Claim(ClaimTypes.NameIdentifier, auth.Identifier)
-                };
-
-            var principal = new ClaimsPrincipal(
-                new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)
-            );
-
-            return principal;
-        }
-
-        private async Task<List<Claim>> GetUserDetails(string id, CancellationToken cancellationToken)
-        {
-            var userDetails = await _client.GetUserDetailsAsync(id, cancellationToken);
-            var groups = await _client.GetUserGroupsAsync(id, cancellationToken);
-
-            if (userDetails == null || userDetails.properties == null || userDetails.properties.state != "active" || id == null)
-                throw new AuthenticationException("Could not find user");
-
-            var claims = new List<Claim>();
-
-            if (userDetails.properties.email != null)
-                claims.Add(new Claim(ClaimTypes.Email, userDetails.properties.email));
-
-            if (userDetails.properties.firstName != null)
-                claims.Add(new Claim(ClaimTypes.GivenName, userDetails.properties.firstName));
-
-            if (userDetails.properties.lastName != null)
-                claims.Add(new Claim(ClaimTypes.Surname, userDetails.properties.lastName));
-
-            if (userDetails.properties.firstName != null || userDetails.properties.lastName != null)
-                claims.Add(new Claim(ClaimTypes.Name, $"{userDetails.properties.firstName} {userDetails.properties.lastName}".Trim()));
-
-            var devGroup = groups?.value?.FirstOrDefault(x => x.name == "developers");
-            if (devGroup != null)
-                claims.Add(new Claim(CustomClaimTypes.Developer, "developer"));
-
-            if (userDetails.properties.registrationDate != null)
-                claims.Add(new Claim(CustomClaimTypes.RegistrationDate, userDetails.properties.registrationDate.Value.ToString()));
-
-            return claims;
-        }
-        #endregion
     }
 }

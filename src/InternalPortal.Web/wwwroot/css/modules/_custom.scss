@@ -1,0 +1,22 @@
+﻿/*
+    Custom styles
+*/
+.badge {
+    font-family: Courier New, Courier, monospace;
+    background: none;
+    border: 1px solid #1d70b8;
+    color: #1d70b8;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    line-height: 1.7em;
+    display: inline-block;
+    padding: 0 5px;
+    margin: 0 0 10px 0;
+    vertical-align: middle;
+}
+
+.govuk-details__summary .details-tag, .govuk-details__summary .details-title {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+}
