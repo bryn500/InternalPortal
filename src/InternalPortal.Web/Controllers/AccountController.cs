@@ -40,7 +40,7 @@ namespace InternalPortal.Web.Controllers
         [ActiveHeaderItemFilter(ActiveHeaderItem.Login)]
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(SignInViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login(SignInViewModel model, string? returnUrl = null, CancellationToken cancellationToken = default)
         {
             ViewData["Title"] = "Login";
 
@@ -57,7 +57,10 @@ namespace InternalPortal.Web.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                return RedirectToAction("UserDetails", new { redirect = "/" });
+                if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl))
+                    returnUrl = "/";
+
+                return RedirectToAction("UserDetails", new { returnUrl });
             }
             catch (HttpRequestException ex)
             {
@@ -72,9 +75,9 @@ namespace InternalPortal.Web.Controllers
         }
 
         [HttpGet("userdetails")]
-        public async Task<IActionResult> UserDetails(string redirect, CancellationToken cancellationToken)
+        public async Task<IActionResult> UserDetails(string returnUrl, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(redirect))
+            if (string.IsNullOrWhiteSpace(returnUrl))
                 return NotFound();
 
             var id = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
@@ -96,7 +99,7 @@ namespace InternalPortal.Web.Controllers
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, User);
                 }
 
-                return Redirect(redirect);
+                return Redirect(returnUrl);
             }
             catch (Exception)
             {
@@ -109,14 +112,22 @@ namespace InternalPortal.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return Redirect("/");
+            return RedirectToAction("LogoutSuccess");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("logout-success")]
+        public IActionResult LogoutSuccess()
+        {
+            ViewData["Title"] = "Logout successful";
+            return View();
         }
 
         [ActiveHeaderItemFilter(ActiveHeaderItem.Profile)]
         [HttpGet("profile")]
         public IActionResult Profile()
         {
-            ViewData["Title"] = "Login";
+            ViewData["Title"] = "Profile";
             var model = new ProfileViewModel(User.Claims);
             return View(model);
         }
