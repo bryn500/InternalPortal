@@ -18,6 +18,12 @@ This project uses the ASP.NET Core [Secret Manager](https://docs.microsoft.com/e
 
 ```json
 {
+	"ManagmentApi": {
+        "SubscriptionPath": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/xxxxx/providers/Microsoft.ApiManagement/service/#apim resource name#",
+        "ManagementApiPrimaryKey": "#apim managment api key#",
+        "ManagementApiId": "#apim managment api id#",
+        "BackendUrl": "#apim base url#",
+  }
 }
 ```
 
@@ -40,4 +46,14 @@ npm run dev
 ```console
 dotnet build
 dotnet run
-``
+```
+
+## Test
+
+UI tests require the project to be running and TEST_HOST in app settings to point to the app's running url
+
+All other tests can be run without setup
+
+```console
+dotnet test
+```
