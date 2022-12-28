@@ -10,7 +10,7 @@ using InternalPortal.Web.Controllers;
 namespace InternalPortal.Web.Tests.Filters
 {
     [TestClass]
-    public class ActiveHeaderItemTests
+    public class ActiveHeaderItemFilterTests
     {
         [TestMethod]
         public void ActiveHeaderItemFilterAttribute_SetsViewBag()
