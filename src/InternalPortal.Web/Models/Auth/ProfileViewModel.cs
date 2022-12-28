@@ -8,6 +8,7 @@ namespace InternalPortal.Web.Models.Auth
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? FullName { get; set; }
         public string? Email { get; set; }
         public string? RegistrationDate { get; set; }
         public bool Developer { get; set; }
@@ -23,6 +24,9 @@ namespace InternalPortal.Web.Models.Auth
                         break;
                     case ClaimTypes.Surname:
                         LastName = claim.Value;
+                        break;
+                    case ClaimTypes.Name:
+                        FullName = claim.Value;
                         break;
                     case ClaimTypes.Email:
                         Email = claim.Value;
