@@ -54,7 +54,7 @@ namespace InternalPortal.Web
                 AddAuthExtension.AddAuthOptions(options);
 
                 // Handle cancelled requests
-                options.Filters.Add<OperationCancelledExceptionFilter>();
+                options.Filters.Add<OperationCancelledExceptionFilterAttribute>();
 
                 // Automatically add an anti-forgery token to any http request method that alters server state
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());

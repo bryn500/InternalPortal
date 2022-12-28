@@ -1,5 +1,5 @@
 ﻿using Apim;
-using InternalPortal.Web.Service;
+using InternalPortal.Web.Services;
 
 namespace InternalPortal.Web.AppStart
 {

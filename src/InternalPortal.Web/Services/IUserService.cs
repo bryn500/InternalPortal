@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace InternalPortal.Web.Service
+namespace InternalPortal.Web.Services
 {
     public interface IUserService
     {

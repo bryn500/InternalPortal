@@ -2,7 +2,7 @@
 using InternalPortal.Web.Filters;
 using InternalPortal.Web.Models.Auth;
 using InternalPortal.Web.Models.Shared;
-using InternalPortal.Web.Service;
+using InternalPortal.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;

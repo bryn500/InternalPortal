@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace InternalPortal.Web.Filters
 {
-    public class OperationCancelledExceptionFilter : ExceptionFilterAttribute
+    public class OperationCancelledExceptionFilterAttribute : ExceptionFilterAttribute
     {
         private readonly ILogger _logger;
 
-        public OperationCancelledExceptionFilter(ILoggerFactory loggerFactory)
+        public OperationCancelledExceptionFilterAttribute(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<OperationCancelledExceptionFilter>();
+            _logger = loggerFactory.CreateLogger<OperationCancelledExceptionFilterAttribute>();
         }
 
         public override void OnException(ExceptionContext context)

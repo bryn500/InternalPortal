@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Authentication;
 using System.Security.Claims;
 
-namespace InternalPortal.Web.Service
+namespace InternalPortal.Web.Services
 {
     public class UserService : IUserService
     {

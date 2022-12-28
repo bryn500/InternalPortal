@@ -10,7 +10,7 @@
         {
         }
 
-        public QuestionViewModel(string questionText, string? hint = null, string type = null)
+        public QuestionViewModel(string questionText, string? hint = null, string? type = null)
         {
             Question = questionText;
             Hint = hint;
