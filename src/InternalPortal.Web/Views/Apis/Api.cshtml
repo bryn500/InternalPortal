@@ -13,7 +13,7 @@
 
 <section class="govuk-!-margin-bottom-6">
     <h2 class="govuk-heading-l" id="Overview">Overview</h2>
-    <p class="govuk-body">@Model.Description</p>
+    <p>@Model.Description</p>
 </section>
 
 <section class="govuk-!-margin-bottom-6">
@@ -41,7 +41,7 @@
                 </summary>
                 <div class="govuk-details__text">
                     <h3 class="govuk-heading-s">Description</h3>
-                    <p class="govuk-body">@operation?.properties?.description</p>
+                    <p>@operation?.properties?.description</p>
 
                     @if (operation?.properties?.templateParameters != null && operation.properties.templateParameters.Count > 0)
                     {
@@ -103,7 +103,7 @@
                         @foreach (var response in operation.properties.responses)
                         {
                             <h3>@response.statusCode</h3>
-                            <p class="govuk-body">
+                            <p>
                                 @response.description
                             </p>
                             @if (response.representations != null && response.representations.Count > 0)
