@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "29ae92b7-e6f4-4f02-a558-ab3ce7415cca",
+		"name": "APIM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10167433"
+	},
+	"item": [
+		{
+			"name": "Signin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{basicauth}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/identity?api-version={{apiVersion}}",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"identity"
+					],
+					"query": [
+						{
+							"key": "$top",
+							"value": "10",
+							"disabled": true
+						},
+						{
+							"key": "$skip",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "expandApiVersionSet",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{usersas}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/users/{{userid}}?api-version={{apiVersion}}",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"users",
+						"{{userid}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Groups",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{usersas}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/users/{{userid}}/groups?api-version={{apiVersion}}",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"users",
+						"{{userid}}",
+						"groups"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Apis",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{usersas}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/apis?api-version={{apiVersion}}&$top=5&$skip=60&expandApiVersionSet=true",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"apis"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						},
+						{
+							"key": "$top",
+							"value": "5"
+						},
+						{
+							"key": "$skip",
+							"value": "60"
+						},
+						{
+							"key": "expandApiVersionSet",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Api",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{usersas}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/apis/{{apiId}}?api-version={{apiVersion}}",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"apis",
+						"{{apiId}}"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Api Schemas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{usersas}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/apis/{{apiId}}/schemas?api-version={{apiVersion}}",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"apis",
+						"{{apiId}}",
+						"schemas"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Api Operations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{usersas}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}{{subscriptionPath}}/apis/{{apiId}}/operations?api-version={{apiVersion}}",
+					"host": [
+						"{{baseurl}}{{subscriptionPath}}"
+					],
+					"path": [
+						"apis",
+						"{{apiId}}",
+						"operations"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{apiVersion}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiVersion",
+			"value": "2021-08-01",
+			"type": "string"
+		},
+		{
+			"key": "apiId",
+			"value": "###"
+		}
+	]
+}

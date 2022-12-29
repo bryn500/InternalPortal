@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{13DF2373-DCC7-48ED-8A4C-BAED7E9EF11C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		APIM.postman_collection.json = APIM.postman_collection.json
 		azure-pipelines.yml = azure-pipelines.yml
 		LICENSE = LICENSE
 		readme.md = readme.md
