@@ -49,10 +49,18 @@ namespace InternalPortal.Web.Controllers
         [HttpGet("{id}/definition")]
         public async Task<IActionResult> ApiDefinition(string id, string type, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrWhiteSpace(type))
+            string? header = null;
+            switch (type)
+            {
+                case "openapiv3":
+                    header = "application/vnd.oai.openapi";
+                    break;
+            }
+
+            if (string.IsNullOrWhiteSpace(header))
                 return NotFound();
 
-            var responseMessage = await _apiService.GetApiAsync(id, type, cancellationToken);
+            var responseMessage = await _apiService.GetApiAsync(id, header, cancellationToken);
 
             Response.StatusCode = (int)responseMessage.StatusCode;
 

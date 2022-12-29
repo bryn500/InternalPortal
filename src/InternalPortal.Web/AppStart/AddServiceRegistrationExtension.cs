@@ -29,7 +29,7 @@ namespace InternalPortal.Web.AppStart
                         // client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
                     })
                     .AddHttpMessageHandler<ApimDefaultHandler>();
-            }            
+            }
         }
     }
 }

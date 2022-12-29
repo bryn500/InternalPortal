@@ -44,13 +44,13 @@ namespace UITests
             Config = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                .AddEnvironmentVariables()
-               .Build();            
+               .Build();
 
             var host = Config["TEST_HOST"];
 
             if (string.IsNullOrEmpty(host))
                 throw new ArgumentNullException("TEST_HOST");
-            
+
             AppURL = host;
         }
 
