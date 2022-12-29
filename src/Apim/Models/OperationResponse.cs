@@ -13,17 +13,17 @@
     }
 
     public class TemplateParameters
-    { 
-        public string? name { get; set;}
-        public string? description { get; set;}
-        public string? type { get; set;}
-        public bool required { get; set;}
+    {
+        public string? name { get; set; }
+        public string? description { get; set; }
+        public string? type { get; set; }
+        public bool required { get; set; }
     }
 
     public class Request
     {
         public List<Header>? headers { get; set; }
-        public List<object>? queryParameters { get; set; }        
+        public List<object>? queryParameters { get; set; }
         public List<Representations>? representations { get; set; }
     }
 
@@ -46,7 +46,7 @@
 
     public class Representations
     {
-        public string? contentType { get; set;}
-        public string? generatedSample { get; set;}
+        public string? contentType { get; set; }
+        public string? generatedSample { get; set; }
     }
 }

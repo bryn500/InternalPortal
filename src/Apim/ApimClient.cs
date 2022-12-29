@@ -111,7 +111,7 @@ namespace Apim
             {
                 // do in parallel with Task.WhenAll if unmaanged apis becomes a real feature
                 var next = await GetApisAsync(skip + take, 1, false, cancellationToken);
-                apisResponse.nextName = next?.value?.FirstOrDefault()?.properties.displayName;
+                apisResponse.nextName = next?.value?.FirstOrDefault()?.properties?.displayName;
             }
 
             return apisResponse;
@@ -156,7 +156,7 @@ namespace Apim
         public async Task<CollectionResponse<ApimResponse<OperationResponse>>?> GetOperations(string id, CancellationToken cancellationToken = default)
         {
             var responseMessage = await _client.GetAsync($"{_options.SubscriptionPath}/apis/{id}/operations", cancellationToken);
-            return await responseMessage.Content.ReadFromJsonAsync< CollectionResponse<ApimResponse<OperationResponse>>>(cancellationToken: cancellationToken);
+            return await responseMessage.Content.ReadFromJsonAsync<CollectionResponse<ApimResponse<OperationResponse>>>(cancellationToken: cancellationToken);
         }
     }
 }

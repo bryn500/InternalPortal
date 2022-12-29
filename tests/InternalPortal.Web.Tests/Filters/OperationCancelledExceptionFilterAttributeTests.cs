@@ -33,9 +33,9 @@ namespace InternalPortal.Web.Tests.Filters
             actionFilter.OnException(exceptionContext);
 
             //assert
-            var result = (StatusCodeResult)exceptionContext?.Result;
-            Assert.IsTrue(exceptionContext.ExceptionHandled);
-            Assert.AreEqual(499, result.StatusCode);
+            var result = (StatusCodeResult?)exceptionContext?.Result;
+            Assert.IsTrue(exceptionContext?.ExceptionHandled);
+            Assert.AreEqual(499, result?.StatusCode);
         }
 
         [TestMethod]

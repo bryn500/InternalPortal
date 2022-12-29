@@ -10,6 +10,8 @@
 *.userosscache
 *.sln.docstates
 
+.vscode
+
 **/wwwroot/assets/
 **/wwwroot/css/*.css
 **/wwwroot/css/*.css.map

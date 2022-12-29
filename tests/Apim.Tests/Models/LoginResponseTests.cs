@@ -55,7 +55,7 @@ namespace Apim.Tests.Models
         {
             try
             {
-                _ = new LoginResponse("####", new UserIdResponse() { id = "a"});
+                _ = new LoginResponse("####", new UserIdResponse() { id = "a" });
             }
             catch (AuthenticationException)
             {

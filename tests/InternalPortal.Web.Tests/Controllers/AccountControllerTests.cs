@@ -24,12 +24,12 @@ namespace InternalPortal.Web.Tests.Controllers
                 .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
                 .Returns(Task.FromResult((object?)null));
 
-            var services = new ServiceCollection();            
+            var services = new ServiceCollection();
             services.AddSingleton(authServiceMock.Object);
 
             var context = new DefaultHttpContext()
             {
-                RequestServices = services.BuildServiceProvider()            
+                RequestServices = services.BuildServiceProvider()
             };
             context.Request.Scheme = "";
 
@@ -130,7 +130,7 @@ namespace InternalPortal.Web.Tests.Controllers
             // assert
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
-            Assert.IsTrue(viewResult.ViewData["Title"].ToString().StartsWith("Error"));
+            Assert.IsTrue(viewResult?.ViewData["Title"]?.ToString()?.StartsWith("Error"));
         }
 
         [TestMethod]

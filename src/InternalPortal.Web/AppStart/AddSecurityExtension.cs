@@ -41,7 +41,7 @@ namespace InternalPortal.Web.AppStart
                     .FromSelf();
 
                 // mini profiler
-                if (env.IsDevelopment()) 
+                if (env.IsDevelopment())
                     csp.AllowStyles.AllowUnsafeInline();
 
                 // Images allowed from:

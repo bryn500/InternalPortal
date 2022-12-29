@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using InternalPortal.Web.Extensions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using InternalPortal.Web.Extensions;
 
 namespace InternalPortal.Web.Tests.Extensions
 {

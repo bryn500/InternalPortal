@@ -1,11 +1,12 @@
-﻿using InternalPortal.Web.Filters;
+﻿using InternalPortal.Web.Controllers;
+using InternalPortal.Web.Filters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using InternalPortal.Web.Controllers;
+using Microsoft.Extensions.Logging;
 
 namespace InternalPortal.Web.Tests.Filters
 {
@@ -18,7 +19,8 @@ namespace InternalPortal.Web.Tests.Filters
             //arrange
             var requiredHeader = "Test";
             var actionFilter = new ActiveHeaderItemFilterAttribute(requiredHeader);
-            var homeController = new HomeController(null);
+            var mockLogger = new Mock<ILogger<HomeController>>();
+            var homeController = new HomeController(mockLogger.Object);
 
             var actionContext = new ActionContext(
                 new DefaultHttpContext(),
@@ -35,7 +37,7 @@ namespace InternalPortal.Web.Tests.Filters
             actionFilter.OnActionExecuting(actionExecutingContext);
 
             //assert
-            Assert.AreEqual(requiredHeader, homeController.ViewBag.ActiveHeaderItem);            
+            Assert.AreEqual(requiredHeader, homeController.ViewBag.ActiveHeaderItem);
         }
     }
 }

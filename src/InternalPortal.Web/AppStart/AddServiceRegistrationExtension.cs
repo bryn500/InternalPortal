@@ -15,9 +15,21 @@ namespace InternalPortal.Web.AppStart
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IApiService, ApiService>();
 
-            services
-                .AddHttpClient<IApimClient, ApimClient>(c => c.BaseAddress = new Uri(apimOptions.BackendUrl))
-                .AddHttpMessageHandler<ApimDefaultHandler>();
+            if (!string.IsNullOrEmpty(apimOptions.BackendUrl))
+            {
+                // https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory#typed-clients 
+                services
+                    .AddHttpClient<IApimClient, ApimClient>(client =>
+                    {
+                        client.BaseAddress = new Uri(apimOptions.BackendUrl);
+
+                        // use below to set http version policy
+                        // may need to also set on request in ApimDefaultHandler as SendAsync
+                        // client.DefaultRequestVersion = HttpVersion.Version11;
+                        // client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+                    })
+                    .AddHttpMessageHandler<ApimDefaultHandler>();
+            }            
         }
     }
 }

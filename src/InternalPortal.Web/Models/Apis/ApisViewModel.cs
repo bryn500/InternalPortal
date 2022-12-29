@@ -8,7 +8,7 @@
         public List<ApiViewModel> Apis { get; set; }
 
         public string? NextApiName { get; set; }
-                
+
 
         public bool ShowPreviousLink
         { get { return Skipped > 0; } }
@@ -23,7 +23,7 @@
         { get { return PreviousPage + 2; } }
         public string NextPageLink
         { get { return $"/apis?skip={Skipped + Taken}&take={Taken}"; } }
-                
+
         public int TotalPages
         { get { return (int)Math.Ceiling((double)Total / Taken); } }
 
