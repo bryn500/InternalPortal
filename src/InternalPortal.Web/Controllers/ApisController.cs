@@ -27,7 +27,7 @@ namespace InternalPortal.Web.Controllers
             take = Math.Max(Math.Min(take, 64), 1);
             skip = Math.Max(skip, 0);
 
-            var model = await _apiService.GetApisAsync(skip, take, cancellationToken);            
+            var model = await _apiService.GetApisAsync(skip, take, cancellationToken);
 
             return View(model);
         }
@@ -60,7 +60,7 @@ namespace InternalPortal.Web.Controllers
 
             await responseMessage.Content.CopyToAsync(Response.Body, cancellationToken);
 
-            return Ok();
+            return new EmptyResult();
         }
 
         [HttpGet("unmanaged/{id}")]
@@ -75,6 +75,6 @@ namespace InternalPortal.Web.Controllers
             BreadCrumbs?.Add(new KeyValuePair<string, string>("Apis", "/apis"));
 
             return View(api);
-        }        
+        }
     }
 }
