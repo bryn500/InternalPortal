@@ -2,13 +2,13 @@
 
 ## About
 
-.net 6 implementation of APIM portal
+.net 7 implementation of APIM portal
 
 ### Dependencies and technologies
 
 Technologies used:
 
-- Net 6
+- Net 7
 
 ## Installation
 
