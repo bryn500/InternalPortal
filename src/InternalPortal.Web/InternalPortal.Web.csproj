@@ -33,4 +33,13 @@
     <ProjectReference Include="..\APIM\Apim.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="package-lock.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="package.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
