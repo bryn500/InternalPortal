@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="package-lock.json" />
+    <Content Remove="package.json" />
     <Content Remove="wwwroot\css\all.scss" />
     <Content Remove="wwwroot\css\modules\_common.scss" />
     <Content Remove="wwwroot\css\modules\_custom.scss" />
@@ -16,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="package-lock.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="package.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Include="wwwroot\css\all.scss" />
     <None Include="wwwroot\css\modules\_custom.scss" />
     <None Include="wwwroot\css\modules\_extensions.scss" />
@@ -31,15 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\APIM\Apim.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="package-lock.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="package.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>
