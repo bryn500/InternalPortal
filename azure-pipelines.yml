@@ -20,7 +20,15 @@ steps:
     inputs:
       command: restore
       projects: "**/*.csproj"
-
+      
+  - task: Bash@3
+    displayName: Check NuGet vulnerabilities
+    inputs:
+      targetType: 'inline'
+      script: |      
+        dotnet list InternalPortal.sln package --vulnerable | tee vulnerable.out #--include-transitive
+        test `grep -cm 1 'has the following vulnerable packages' vulnerable.out` = 0
+      
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
@@ -36,6 +44,14 @@ steps:
         !**/*.UITests.csproj
       arguments: "--configuration $(BuildConfiguration)"  
 
+  - task: Npm@1
+    displayName: 'Audit Application'
+    inputs:
+      command: custom
+      workingDir: src/InternalPortal.Web
+      verbose: false
+      customCommand: 'run audit'
+      
   - task: Npm@1
     displayName: "npm install Web"
     inputs:
